@@ -9,7 +9,13 @@ if (empty($csvData)) {
     return false;
 }
 
-$makers = GetMakers($csvData);
+$makers = GetMakers([]);
 print_r($makers);
+
+foreach ($makers as $maker) {
+    $mysqli->query("INSERT INTO cars (name) VALUES ('$maker')");
+    echo "$maker\n";
+}
+$mysqli->close();
 
 

@@ -35,11 +35,13 @@ function GetMakers(){
         }
         if ($maker != $data[$keyMaker]) {
             $maker = $data[$keyMaker];
+            $makers[] = $maker;
         }
-        if ($model != $data[$keyModel]) {
+        /*if ($model != $data[$keyModel]) {
             $model = $data[$keyModel];
             $result[$maker][] = $model;
         }
+        */
     }
     return $makers;
 
