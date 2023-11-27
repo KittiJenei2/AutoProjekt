@@ -5,13 +5,7 @@ function getCsvData ($fileName) {
         return false;
     }
     $csvFile = fopen($fileName, 'r');
-    $header = fgetcsv($csvFile);
-    if ($withHeader) {
-        $lines[] = $header;
-    }
-    else {
-        $lines = [];
-    }
+    $lines = [];
     while (! feof($csvFile)) {
         $line = fgetcsv($csvFile);
         $lines[] = $line;
