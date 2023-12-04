@@ -9,34 +9,13 @@ if (empty($csvData)) {
     return false;
 }
 
-$header = $csvData[0];
+$makers = GetMakers([]);
+print_r($makers);
 
-$keyMaker = array_search('make', $header);
-$keyModel = array_search('model', $header);
-$result = [];
-$maker = '';
-$model = '';
-$isHeader = true;
-
-for ($i = 1; count($csvData); $i++) {
-
+foreach ($makers as $maker) {
+    $mysqli->query("INSERT INTO cars (name) VALUES ('$maker')");
+    echo "$maker\n";
 }
-foreach ($csvData as $data) {
-    if ($isHeader) {
-        $isHeader = false;
-        continue;
-    }
-    if ($maker != $data[$keyMaker]) {
-        $maker = $data[$keyMaker];
-    }
-    if ($model != $data[$keyModel]) {
-        $model = $data[$keyModel];
-        $result[$maker][] = $model;
-    }
-}
-print_r($result);
-
-$arr = array ('first' => 'a', 'second' => 'b',);
-$key = array_search ('a', $arr);
+$mysqli->close();
 
 
