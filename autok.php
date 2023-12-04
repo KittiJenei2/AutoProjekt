@@ -16,4 +16,15 @@ class CarDbTools
     {
         $this->mysqli->close();
     }
+
+    function CreateMaker($maker)
+    {
+        $result =$this->mysqli->query("INSERT INTO makers (name) VALUES ('$maker')");
+        if (!$result)
+        {
+            echo "Hiba történt a $maker beszúrása közben";
+        }
+        return $result;
+    }
 }
+
