@@ -1,21 +1,43 @@
 <?php
-require_once('csv-tools.php');
-ini_set('memory-limit', '-1');
 
-$fileName = 'car-db.csv';
-$csvData = getCsvData($fileName);
+require_once('csv-tools.php');
+require_once('db-tools.php');
+require_once('MakersDbTool.php');
+ini_set('memory_limit', '-1');
+
+$filename = "car-db.csv";
+$csvData = getCsvData($filename);
 if (empty($csvData)) {
-    echo "Nem található adat a csv fájlban.";
+    echo 'A fájl nem található';
     return false;
 }
 
-$makers = GetMakers([]);
-print_r($makers);
 
-foreach ($makers as $maker) {
-    $mysqli->query("INSERT INTO cars (name) VALUES ('$maker')");
-    echo "$maker\n";
+
+/*
+$mysqli = new mysqli("localhost","root",null,"cars");
+//check connection
+if ($mysqli->connect_errno) {
+    echo "Failed to connect to MySQL " . $mysqli -> connect_errno;
+    exit();
 }
-$mysqli->close();
+
+echo "connected\n";
+*/
+
+$makersDbTool = new MakersDbTool();
 
 
+$makers = getMakers($csvData);
+
+$errors = [];
+foreach ($makers as $maker)
+{
+    $result = $makersDbTool->createMaker($maker);
+    if (!$result)
+    {
+        $errors[] = $maker;
+    }
+    echo "$maker\n";
+
+}
