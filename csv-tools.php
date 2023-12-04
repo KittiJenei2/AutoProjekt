@@ -46,4 +46,32 @@ function GetMakers(){
     return $makers;
 
     }
-  
+
+function updateMaker($mysqli, $data)
+{
+    $makerName = $data['name'];
+
+    $result = $mysqli->query("UPDATE makers SET name=$makerName");
+
+    if (!$result)
+    {
+        echo "Hiba történt a $makerName beszúrása közben";
+        return $result;
+    }
+    $maker = getMakerByName($mysqli, $makerName);
+
+    return $maker;
+}
+
+function getMakerByName()
+{}
+
+function getMaker($mysqli, $id)
+{
+    $result = $mysqli->query("SELECT * FROM makers WHERE id=$id");
+    $maker = $result->fetch_assoc();
+
+    return $maker;
+}
+
+function delMaker()
