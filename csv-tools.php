@@ -64,7 +64,7 @@ function updateMaker($mysqli, $data)
 }
 
 function getMakerByName()
-{}
+{die;}
 
 function getMaker($mysqli, $id)
 {
@@ -74,4 +74,7 @@ function getMaker($mysqli, $id)
     return $maker;
 }
 
-function delMaker()
+function delMaker($mysqli, $id)
+{
+    die;
+}
