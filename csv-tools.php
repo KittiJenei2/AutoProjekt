@@ -1,62 +1,57 @@
 <?php
 
-
-
-function createMaker($mysqli, $maker)
-{
-    $result = $mysqli->query("INSERT INTO makers (name) VALUES ('$maker')");
-    if (!$result)
-    {
-        echo "Hiba történt a $maker beszúrása közben";
+function getCsvData($filename) {
+    if (!file_exists($filename)) {
+        echo "$filename nem található";
+        return false;
     }
-    
-    return $result;
-}
-
-function updateMaker($mysqli, $data)
-{
-    $makerName = $data['name'];
-    $result = $mysqli->query("UPDATE makers SET name=$makerName");
-    
-    if (!$result)
-    {
-        echo "Hiba történt a $makerName beszúrása közben";
-        return $result;
+    $csvFile = fopen($filename, 'r');
+    $lines = [];
+    while (! feof($csvFile)) {
+        $line = fgetcsv($csvFile);
+        $lines[] = $line;
     }
-    $maker = getMakerByName($mysqli, $makerName);
+    fclose($csvFile);
+
+    return $lines;
+}
+
+function getMakers($csvData)
+{
+    $header = $csvData[0];
+    $idxMaker = array_search('make', $header);
+    //$idxModel = array_search('model', $header);
+
+    $isHeader = true;
+
+   // $result = [];
+    $maker = '';
+   // $model = '';
+    foreach ($csvData as $data) {
+        if (!is_array($data)) {
+            continue;
+        }
+        if ($isHeader) 
+        {
+            $isHeader = false;
+            continue;    
+        }
+        if ($maker != $data[$idxMaker]) {
+            $maker = $data[$idxMaker];
+            $result[] = $maker;
+            
+        }
+        /*if ($model != $data[$idxModel]) {
+            $model = $data[$idxModel];
+            $result[$maker][] = $model;
+        }*/
+    }
     return $result;
+    //print_r($result);   
 }
 
-function getMaker($mysqli, $id)
-{
-    $result = $mysqli->query("SELECT * FROM makers WHERE id=$id");
-    $maker = $result->fetch_assoc();
-
-    return $maker;
-}
-
-function getMakerByName($mysqli, $name)
-{
-    $result = $mysqli->query("SELECT * FROM makers WHERE name=$name");
-    $maker = $result->fetch_assoc();
-
-    return $maker;
 
 
-}
 
-function delMaker($mysqli, $id)
-{$result = $mysqli->query("DELETE makers WHERE id=$id");
-    
 
-    return $result;
-}
-
-function getAllMakers($mysqli)
-{
-    $result = $mysqli->query("SELECT * from makers");
-    $makers = $result->fetch_assoc();
-
-    return $makers;
-}
-
+?>

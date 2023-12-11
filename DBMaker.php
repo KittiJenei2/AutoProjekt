@@ -1,10 +1,10 @@
 <?php
-namespace Cars;
 
-require_once 'carsInterface.php';
+
+require_once 'carsinterface.php';
 require_once 'DB.php';
 
-class DBMaker extends DB implements carsInterface
+class DBMaker extends DB implements carsinterface
 {
     public function create(array $data) : ?int
     {
@@ -12,53 +12,59 @@ class DBMaker extends DB implements carsInterface
         $this->mysqli->query($sql);
 
         $lastInserted = $this
-            ->mysqlu
+            ->mysqli
             ->query("SELECT LAST_INSERT_ID() id;")
             ->fetch_assoc();
-
+            
         return $lastInserted['id'];
     }
 
-    public function get(int $id): array
+    public function get(int $id) : array
     {
         $query = "SELECT * FROM makers WHERE id = $id";
 
         return $this->mysqli->query($query)->fetch_assoc();
     }
 
-    public function GetByName(string $name): array
+    public function getByName(string $name) : array
     {
-        $query = "SELECT * FROM makers WHERE name = $name";
+        $query = "SELECT * FROM makers WHERE name = '$name'";
 
         return $this->mysqli->query($query)->fetch_assoc();
     }
 
-    public function getAll(): array
+    public function getAll() : array
     {
         $query = "SELECT * FROM makers ORDER BY name";
 
-        return $this->mysqli->query($query)->fetch_all($MYSQLI_ASSOC);
+        return $this->mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
+
     }
 
     public function update(int $id, array $data)
     {
-        $query = "UPDATE makers SET $data WHERE id = $id";
+        $query = "UPDATE makers SET $data WHERE id = $id;";
         $this->mysqli->query($query);
 
         return $this->get($id);
     }
 
-    public function delete(int $id)
+    public function delete(int $id) : bool
     {
         $query = "DELETE FROM makers WHERE id = $id";
 
         return $this->mysqli->query($query);
+
     }
 
-    public function getABC(): array
+    public function getAbc() :array
     {
-        $query = "SELECT DISTINCT SUBSTRING(name, 1, 1) ch FROM makers";
+        $query = "SELECT DISTINCT SUBSTRING(name, 1, 1) abc FROM makers";
 
-        return $this->mysqli->query($query)->fetch_all($MYSQLI_ASSOC);
+        return $this->mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
     }
+
 }
+
+
+?>
