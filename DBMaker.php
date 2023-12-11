@@ -64,6 +64,13 @@ class DBMaker extends DB implements carsinterface
         return $this->mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function getByFirstCh($abc)
+    {
+        $query = "SELECT * FROM makers WHERE name LIKE '$abc%' ORDER BY name";
+
+        return $this->mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
+    }
+
 }
 
 
