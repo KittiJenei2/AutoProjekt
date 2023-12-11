@@ -24,6 +24,7 @@
         <a href="models.php"><button>Modellek</button></a>
     </nav>
     <h1>Gyártók</h1>
+    <tbody>
     <?php
         require_once 'dbmaker.php';
         $carMaker = new DBMaker();
@@ -34,14 +35,34 @@
         echo"<div style='display: flex'>";
         foreach ($abc as $char)
         {
-
+            echo "
+                <form method='post' action='index.php'>
+                    <input type='hidden' name='abc' value='{$char['abc']}'>
+                    <button type='submit'>{$char['abc']}</button>&nbsp;
+                </form>
+                ";
         }
         echo"</div><br>";
 
-        if(isset($_POST['ch'])){
 
+        ?>
+        </tbody>
+
+        <tbody>
+        <?php
+        $abc = $_POST['abc'];
+        $makers = $carMakers->getByFirstCh($abc);
+        foreach ($makers as $maker)
+        {
+            $id = $maker['id'];
+            $name = $maker['name'];
+            echo "<tr>
+                    <td>$id</td>
+                    <td>$name</td>
+                    <td>Mod / Del</td>
+                  </tr>";
         }
-        echo"
+        ?>
         </tbody>
     <table>
 </body>
